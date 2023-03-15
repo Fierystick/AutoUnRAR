@@ -30,13 +30,13 @@ namespace AutoUnrar
                 if (previousSize == fileInfo.Length)
                 {
                     retries++;
-                    
+                    Console.WriteLine($"File size is changing...Waiting for download to complete, Interval: {intervalSeconds} seconds | retries: {retries} | max retries: {maxRetries}");
                 }
                 else
                 {
                     retries = 0;
                 }
-                Console.WriteLine($"File size is changing...Waiting for download to complete, Interval: {intervalSeconds} | retries: {retries} | max retries: {maxRetries}");
+
                 previousSize = fileInfo.Length;
                 await Task.Delay(TimeSpan.FromSeconds(intervalSeconds));
             }
@@ -45,7 +45,7 @@ namespace AutoUnrar
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(60)); // Add a 60-second delay before checking if the file is in use
+                await Task.Delay(TimeSpan.FromSeconds(30)); // Add a 60-second delay before checking if the file is in use
                 using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
                 return false;
             }
@@ -63,7 +63,7 @@ namespace AutoUnrar
                 Console.WriteLine($"Found a path that doesn't have a video file! {folderPath}");
                 if (await IsFileInUse(rarFilePath))
                 {
-                    await WaitForFileDownloadCompletion(rarFilePath, 5, 20); // Wait for the file download to complete
+                    await WaitForFileDownloadCompletion(rarFilePath, 30, 20); // Wait for the file download to complete
                     if (await IsFileInUse(rarFilePath))
                     {
                         Console.WriteLine($"Skipping extraction for {rarFilePath} as it is in use by another process.");
