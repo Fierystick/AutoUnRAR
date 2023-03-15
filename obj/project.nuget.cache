@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ho2mD4xLiItq9RUyWomQ6dyo1lEMxQhqqurjK0worhwEsfovawotDFHgDtaEeLRiISc+TgB9xoxarMzvKEAVzg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Zacha\\source\\repos\\AutoUnRAR\\AutoUnRAR.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Zacha\\.nuget\\packages\\sharpcompress\\0.32.2\\sharpcompress.0.32.2.nupkg.sha512"
+  ],
+  "logs": []
+}

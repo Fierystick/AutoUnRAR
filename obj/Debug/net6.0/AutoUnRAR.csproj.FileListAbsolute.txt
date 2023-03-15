@@ -1,0 +1,17 @@
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\AutoUnRAR.exe
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\AutoUnRAR.deps.json
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\AutoUnRAR.runtimeconfig.json
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\AutoUnRAR.dll
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\AutoUnRAR.pdb
+C:\Users\Zacha\source\repos\AutoUnRAR\bin\Debug\net6.0\SharpCompress.dll
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.csproj.AssemblyReference.cache
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.AssemblyInfoInputs.cache
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.AssemblyInfo.cs
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.csproj.CoreCompileInputs.cache
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.csproj.CopyComplete
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.dll
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\refint\AutoUnRAR.dll
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.pdb
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\AutoUnRAR.genruntimeconfig.cache
+C:\Users\Zacha\source\repos\AutoUnRAR\obj\Debug\net6.0\ref\AutoUnRAR.dll
