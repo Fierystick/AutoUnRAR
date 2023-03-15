@@ -13,11 +13,11 @@ namespace AutoUnrar
 
         private static bool ContainsVideoFile(string folderPath)
         {
-            //folderPath = "C:\\UnZip test";
             var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
             return allFiles.Any(file => VideoExtensions.Contains(Path.GetExtension(file).ToLower()));
-
         }
+        
+        //This checks the file size and if its changing, retries if it is
         private static async Task WaitForFileDownloadCompletion(string filePath, int intervalSeconds, int maxRetries)
         {
             int retries = 0;
@@ -46,7 +46,7 @@ namespace AutoUnrar
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(30)); // Add a 60-second delay before checking if the file is in use
+                await Task.Delay(TimeSpan.FromSeconds(30)); // Add a 30-second delay before checking if the file is in use
                 using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
                 return false;
             }
@@ -72,7 +72,6 @@ namespace AutoUnrar
                         return;
                     }
                 }
-
                 try
                 {
                     using var archive = RarArchive.Open(rarFilePath);
@@ -92,9 +91,7 @@ namespace AutoUnrar
 
         static async Task Main(string[] args)
         {
-
             Console.WriteLine("Monitoring for new .rar files. Press 'q' to exit.");
-
 
             var folderPath = "C:\\UnZip test";
             var rarFiles = Directory.GetFiles(folderPath, "*.rar", SearchOption.AllDirectories);
