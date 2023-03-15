@@ -14,8 +14,9 @@ namespace AutoUnrar
         private static bool ContainsVideoFile(string folderPath)
         {
             folderPath = "C:\\UnZip test";
-            var files = Directory.GetFiles(folderPath);
-            return files.Any(file => VideoExtensions.Contains(Path.GetExtension(file).ToLower()));
+            var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
+            return allFiles.Any(file => VideoExtensions.Contains(Path.GetExtension(file).ToLower()));
+
         }
         private static async Task WaitForFileDownloadCompletion(string filePath, int intervalSeconds, int maxRetries)
         {
