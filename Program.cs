@@ -17,7 +17,30 @@ namespace AutoUnrar
             var files = Directory.GetFiles(folderPath);
             return files.Any(file => VideoExtensions.Contains(Path.GetExtension(file).ToLower()));
         }
+        private static async Task WaitForFileDownloadCompletion(string filePath, int intervalSeconds, int maxRetries)
+        {
+            int retries = 0;
+            long previousSize = -1;
+            FileInfo fileInfo = new FileInfo(filePath);
 
+            while (retries < maxRetries)
+            {
+                fileInfo.Refresh();
+
+                if (previousSize == fileInfo.Length)
+                {
+                    retries++;
+                    
+                }
+                else
+                {
+                    retries = 0;
+                }
+                Console.WriteLine($"File size is changing...Waiting for download to complete, Interval: {intervalSeconds} | retries: {retries} | max retries: {maxRetries}");
+                previousSize = fileInfo.Length;
+                await Task.Delay(TimeSpan.FromSeconds(intervalSeconds));
+            }
+        }
         private static async Task<bool> IsFileInUse(string filePath)
         {
             try
@@ -32,15 +55,20 @@ namespace AutoUnrar
             }
         }
 
-        private static async void ExtractRarFile(string rarFilePath)
+        private static async Task ExtractRarFile(string rarFilePath)
         {
             var folderPath = Path.GetDirectoryName(rarFilePath);
             if (!ContainsVideoFile(folderPath))
             {
+                Console.WriteLine($"Found a path that doesn't have a video file! {folderPath}");
                 if (await IsFileInUse(rarFilePath))
                 {
-                    Console.WriteLine($"Skipping extraction for {rarFilePath} as it is in use by another process.");
-                    return;
+                    await WaitForFileDownloadCompletion(rarFilePath, 5, 20); // Wait for the file download to complete
+                    if (await IsFileInUse(rarFilePath))
+                    {
+                        Console.WriteLine($"Skipping extraction for {rarFilePath} as it is in use by another process.");
+                        return;
+                    }
                 }
 
                 try
@@ -51,19 +79,20 @@ namespace AutoUnrar
                         entry.WriteToDirectory(folderPath, new ExtractionOptions { Overwrite = true });
                     }
                     Console.WriteLine($"Successfully extracted: {rarFilePath}");
+                    Console.WriteLine("Monitoring for new .rar files. Press 'q' to exit.");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Failed to extract {rarFilePath}: File in Use");
+                    Console.WriteLine($"Failed to extract {rarFilePath}: {e}");
                 }
             }
         }
 
         static void Main(string[] args)
         {
-            
-                Console.WriteLine("Scanning.");
-            
+
+            Console.WriteLine("Monitoring for new .rar files. Press 'q' to exit.");
+
 
             var folderPath = "C:\\UnZip test";
             var rarFiles = Directory.GetFiles(folderPath, "*.rar", SearchOption.AllDirectories);
@@ -83,7 +112,7 @@ namespace AutoUnrar
             watcher.Created += (sender, eventArgs) => ExtractRarFile(eventArgs.FullPath);
             watcher.EnableRaisingEvents = true;
 
-            Console.WriteLine("Monitoring folder for new .rar files. Press 'q' to exit.");
+            
             while (Console.Read() != 'q') ;
         }
     }
