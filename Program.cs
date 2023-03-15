@@ -22,7 +22,7 @@ namespace AutoUnrar
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(5)); // Add a 5-second delay before checking if the file is in use
+                await Task.Delay(TimeSpan.FromSeconds(60)); // Add a 60-second delay before checking if the file is in use
                 using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
                 return false;
             }
