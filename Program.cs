@@ -13,7 +13,7 @@ namespace AutoUnrar
 
         private static bool ContainsVideoFile(string folderPath)
         {
-            folderPath = "C:\\UnZip test";
+            //folderPath = "C:\\UnZip test";
             var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
             return allFiles.Any(file => VideoExtensions.Contains(Path.GetExtension(file).ToLower()));
 
@@ -62,6 +62,7 @@ namespace AutoUnrar
             if (!ContainsVideoFile(folderPath))
             {
                 Console.WriteLine($"Found a path that doesn't have a video file! {folderPath}");
+                Console.WriteLine($"Extracting RAR: {rarFilePath}");
                 if (await IsFileInUse(rarFilePath))
                 {
                     await WaitForFileDownloadCompletion(rarFilePath, 30, 20); // Wait for the file download to complete
@@ -89,7 +90,7 @@ namespace AutoUnrar
             }
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             Console.WriteLine("Monitoring for new .rar files. Press 'q' to exit.");
@@ -100,7 +101,7 @@ namespace AutoUnrar
 
             foreach (var rarFile in rarFiles)
             {
-                ExtractRarFile(rarFile);
+                await ExtractRarFile(rarFile);
             }
 
             using var watcher = new FileSystemWatcher(folderPath)
@@ -110,10 +111,19 @@ namespace AutoUnrar
                 IncludeSubdirectories = true
             };
 
-            watcher.Created += (sender, eventArgs) => ExtractRarFile(eventArgs.FullPath);
+            watcher.Created += async (sender, eventArgs) => await ExtractRarFile(eventArgs.FullPath);
             watcher.EnableRaisingEvents = true;
 
-            
+            using var changeWatcher = new FileSystemWatcher(folderPath)
+            {
+                NotifyFilter = NotifyFilters.LastWrite,
+                Filter = "*",
+                IncludeSubdirectories = true
+            };
+
+            changeWatcher.Changed += async (sender, eventArgs) => await ExtractRarFile(eventArgs.FullPath);
+            changeWatcher.EnableRaisingEvents = true;
+
             while (Console.Read() != 'q') ;
         }
     }
